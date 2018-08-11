@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'ui/bottom_navigation.dart';
+import './ui/lessons.dart';
 
 void main() => runApp(new MyApp());
 
@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
       body: new PageView(
         children: <Widget>[
           new Dashboard(),
-          new Appoinments(),
+          new Lessons(),
           new Skills(),
         ],
         controller: _pageController,
@@ -86,19 +86,6 @@ class Dashboard extends StatelessWidget {
       body: new Container(
         alignment: Alignment.topLeft,
         child: Text('Dashboard screen'),
-      ),
-    );
-  }
-}
-
-class Appoinments extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(title: Text('Afspraken')),
-      body: new Container(
-        alignment: Alignment.topLeft,
-        child: Text('Een overzicht van alle lessen'),
       ),
     );
   }
