@@ -9,7 +9,11 @@ class Lessons extends StatefulWidget {
 
 class _LessonsState extends State<Lessons> {
 
-  final List _lessons = List.generate(30, (i) => "Item number $i");
+  final List _lessons = List.generate(30, (i) => "Sat, 25 februari $i");
+
+  final TextStyle _cardFooterStyle = TextStyle(color: Colors.grey);
+
+  final Icon _cardFooterIcon = Icon(Icons.access_time, size: 20.0, color: Colors.grey);
 
   @override
   Widget build(BuildContext context) {
@@ -35,26 +39,14 @@ class _LessonsState extends State<Lessons> {
         child: Column(
           children: <Widget>[
             ListTile(
-                leading: Icon(Icons.access_time, color: Colors.blue),
-                title: Text(_lessons[index])
+              title: Text(
+                _lessons[index],
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+              ),
             ),
             Container(
-              decoration: BoxDecoration(border: Border( top: BorderSide(color: Colors.blue[200]))),
-              padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-              child: Row(
-                children: <Widget>[
-
-                  Icon(Icons.timer),
-                  Container(width: 10.0),
-                  Text('19:00'),
-                  Container(width: 15.0),
-                  Text('--:--'),
-
-                  Expanded(
-                    child: Text('70 min', textAlign: TextAlign.right),
-                  )
-                ],
-              ),
+              padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 10.0),
+              child: _buildCardFooter()
             )
           ],
         )
@@ -62,6 +54,22 @@ class _LessonsState extends State<Lessons> {
     );//Card(child: Text(_lessons[index]));
   }
 
+  Widget _buildCardFooter() {
+    return Row(
+      children: <Widget>[
+        _cardFooterIcon,
+        const SizedBox(width: 10.0),
+        Text('19:00', style: _cardFooterStyle),
+        const SizedBox(width: 10.0),
+        Text('-', style: _cardFooterStyle),
+        const SizedBox(width: 10.0),
+        Text('--:--', style: _cardFooterStyle),
+        Expanded(
+          child: Text('70 min', textAlign: TextAlign.right),
+        )
+      ],
+    );
+  }
 
   @override
   void initState() {
