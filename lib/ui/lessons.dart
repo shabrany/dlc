@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'create_lesson.dart';
 
 class Lessons extends StatefulWidget {
 
@@ -20,11 +21,20 @@ class _LessonsState extends State<Lessons> {
     return new Scaffold(
       appBar: AppBar(title: Text('Afspraken')),
       body: _renderList(),
+      backgroundColor: Colors.grey.shade100,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => new FormNewLesson()));
+        },
+        tooltip: 'Nieuwe afspraak toevoegen',
+        child: Icon(Icons.add),
+      ),
     );
   }
 
   Widget _renderList() {
     return new ListView.builder(
+      padding: EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 1.0),
       itemCount: _lessons.length,
       itemBuilder: (BuildContext context, int index) {
         return _buildAppointmentItem(index);
@@ -36,6 +46,7 @@ class _LessonsState extends State<Lessons> {
     return new Padding(
       padding: new EdgeInsets.all(5.0),
       child: Card(
+        //  shape: RoundedRectangleBorder(side: BorderSide(width: 1.0, color: Colors.grey.shade400)),
         child: Column(
           children: <Widget>[
             ListTile(
@@ -73,7 +84,6 @@ class _LessonsState extends State<Lessons> {
 
   @override
   void initState() {
-
     super.initState();
   }
 
