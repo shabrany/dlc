@@ -50,9 +50,8 @@ class _FormNewLessonState extends State<FormNewLesson> {
 
   TimeOfDay convertToTime(String input) {
     try {
-      int hour = int.parse(input.substring(0,1));
-      int minute = int.parse(input.substring(3,4));
-      return new TimeOfDay(hour: hour, minute: minute);
+      var t = new DateFormat.jm().parseStrict(input);
+      return new TimeOfDay.fromDateTime(t);
     } catch (e) {
       return null;
     }
@@ -76,6 +75,7 @@ class _FormNewLessonState extends State<FormNewLesson> {
             color: Colors.lightBlueAccent,
           ),
           child: formField,
+          padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
         ))
       ],
     );
