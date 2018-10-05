@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'create_lesson.dart';
+import 'package:rijleskaart/provider/lesson_provider.dart';
+import 'package:rijleskaart/model/lesson.dart';
 
 class Lessons extends StatefulWidget {
 
@@ -10,7 +12,12 @@ class Lessons extends StatefulWidget {
 
 class _LessonsState extends State<Lessons> {
 
+  LessonProvider provider = new LessonProvider();
+
+  List<Lesson> _lessons_ = new List();
+
   final List _lessons = List.generate(30, (i) => "Sat, 25 februari $i");
+
 
   final TextStyle _cardFooterStyle = TextStyle(color: Colors.grey);
 
@@ -23,26 +30,36 @@ class _LessonsState extends State<Lessons> {
       body: _renderList(),
       backgroundColor: Colors.grey.shade100,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => new FormNewLesson()));
-        },
+        onPressed: () => _createLesson(context),
         tooltip: 'Nieuwe afspraak toevoegen',
         child: Icon(Icons.add),
       ),
     );
   }
 
+  void _createLesson(BuildContext context) async {
+    String result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => new FormNewLesson())
+    );
+
+    if (result == 'saved') {
+      _lessons_.clear();
+      loadData();
+    }
+  }
+
   Widget _renderList() {
     return new ListView.builder(
       padding: EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 1.0),
-      itemCount: _lessons.length,
+      itemCount: _lessons_.length,
       itemBuilder: (BuildContext context, int index) {
-        return _buildAppointmentItem(index);
+        return _buildAppointmentItem(_lessons_[index]);
       }
     );
   }
 
-  Widget _buildAppointmentItem(int index) {
+  Widget _buildAppointmentItem(Lesson lesson) {
     return new Padding(
       padding: new EdgeInsets.all(5.0),
       child: Card(
@@ -51,13 +68,13 @@ class _LessonsState extends State<Lessons> {
           children: <Widget>[
             ListTile(
               title: Text(
-                _lessons[index],
+                lesson.date,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 10.0),
-              child: _buildCardFooter()
+              child: _buildCardFooter(lesson)
             )
           ],
         )
@@ -65,16 +82,16 @@ class _LessonsState extends State<Lessons> {
     );//Card(child: Text(_lessons[index]));
   }
 
-  Widget _buildCardFooter() {
+  Widget _buildCardFooter(Lesson lesson) {
     return Row(
       children: <Widget>[
         _cardFooterIcon,
         const SizedBox(width: 10.0),
-        Text('19:00', style: _cardFooterStyle),
+        Text(lesson.startTime, style: _cardFooterStyle),
         const SizedBox(width: 10.0),
         Text('-', style: _cardFooterStyle),
         const SizedBox(width: 10.0),
-        Text('--:--', style: _cardFooterStyle),
+        Text(lesson.endTime, style: _cardFooterStyle),
         Expanded(
           child: Text('70 min', textAlign: TextAlign.right),
         )
@@ -85,7 +102,18 @@ class _LessonsState extends State<Lessons> {
   @override
   void initState() {
     super.initState();
+    loadData();
   }
+
+  void loadData() async {
+    await provider.init();
+    provider.all().then((lessons) {
+      setState(() {
+        _lessons_ = lessons;
+      });
+    });
+  }
+
 
   @override
   void dispose() {

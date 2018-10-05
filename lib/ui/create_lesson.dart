@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../model/lesson.dart';
+import '../provider/lesson_provider.dart';
 import 'package:intl/intl.dart';
 
 class FormNewLesson extends StatefulWidget {
@@ -19,6 +20,7 @@ class _FormNewLessonState extends State<FormNewLesson> {
   final GlobalKey<FormState>_formKey = new GlobalKey<FormState>();
 
   Lesson lesson = new Lesson();
+  LessonProvider provider = new LessonProvider();
 
   Future<Null> _selectDate(BuildContext context, String initialDateString ) async {
     final DateTime datePicked = await showDatePicker(
@@ -82,7 +84,11 @@ class _FormNewLessonState extends State<FormNewLesson> {
   }
 
   Widget _buildDateField() {
-    TextFormField _dateField = new TextFormField(controller: _dateController, decoration: textInputDecoration());
+    TextFormField _dateField = new TextFormField(
+        controller: _dateController,
+        decoration: textInputDecoration(),
+        onSaved: (String value) => lesson.date = value,
+    );
     Row _fieldGroup = this._buildFormRowField('Datum:', _dateField);
     return new GestureDetector(
       child: AbsorbPointer(child: _fieldGroup),
@@ -170,7 +176,12 @@ class _FormNewLessonState extends State<FormNewLesson> {
 
     _formKey.currentState.save();
 
-    print(lesson);
+    provider.init().then((value) {
+      provider.insert(lesson);
+    });
+
+
+    Navigator.pop(context, 'saved');
   }
 
   @override
