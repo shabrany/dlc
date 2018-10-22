@@ -8,8 +8,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      builder: (context, child) => _mediaQuery(context, child),
       title: 'Digitale Rijleskaart',
       home: new MainPage(),
+    );
+  }
+
+  MediaQuery _mediaQuery(context, child) {
+    return MediaQuery(
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+        child: child
     );
   }
 }

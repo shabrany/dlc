@@ -39,6 +39,9 @@ class LessonProvider {
 
     if (rows.length > 0) {
       for (int i = 0; i < rows.length; i++) {
+
+        print(rows[i]['startTime']);
+
         Lesson lesson = new Lesson.init(rows[i]['date'], rows[i]['startTime'], rows[i]['endTime']);
         lesson.id = rows[i]['id'];
         lessons.add(lesson);

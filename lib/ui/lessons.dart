@@ -16,9 +16,6 @@ class _LessonsState extends State<Lessons> {
 
   List<Lesson> _lessons_ = new List();
 
-  final List _lessons = List.generate(30, (i) => "Sat, 25 februari $i");
-
-
   final TextStyle _cardFooterStyle = TextStyle(color: Colors.grey);
 
   final Icon _cardFooterIcon = Icon(Icons.access_time, size: 20.0, color: Colors.grey);
@@ -93,7 +90,7 @@ class _LessonsState extends State<Lessons> {
         const SizedBox(width: 10.0),
         Text(lesson.endTime, style: _cardFooterStyle),
         Expanded(
-          child: Text('70 min', textAlign: TextAlign.right),
+          child: Text('${lesson.calculateDiff()}  min', textAlign: TextAlign.right),
         )
       ],
     );
