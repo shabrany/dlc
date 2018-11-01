@@ -3,6 +3,8 @@ import 'dart:async';
 import '../model/lesson.dart';
 import '../provider/lesson_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:rijleskaart/util/helpers.dart' as Util;
+import 'package:rijleskaart/ui/app_colors.dart' as AppColors;
 
 class FormNewLesson extends StatefulWidget {
   @override
@@ -26,7 +28,7 @@ class _FormNewLessonState extends State<FormNewLesson> {
   Future<Null> _selectDate(BuildContext context, String initialDateString ) async {
     final DateTime datePicked = await showDatePicker(
         context: context,
-        initialDate: convertToDate(initialDateString) ?? _today,
+        initialDate: Util.convertToDate(initialDateString) ?? _today,
         firstDate: DateTime(2016),
         lastDate: DateTime(2020)
     );
@@ -41,7 +43,7 @@ class _FormNewLessonState extends State<FormNewLesson> {
   Future<Null> _selectTime(BuildContext context, TextEditingController controller) async {
     final TimeOfDay timePicked = await showTimePicker(
         context: context,
-        initialTime: convertToTime(controller.text) ?? _now
+        initialTime: Util.convertToTime(controller.text) ?? _now
     );
 
     if (timePicked == null) return;
@@ -51,32 +53,23 @@ class _FormNewLessonState extends State<FormNewLesson> {
     });
   }
 
-  TimeOfDay convertToTime(String input) {
-    try {
-      var t = new DateFormat.jm().parseStrict(input);
-      return new TimeOfDay.fromDateTime(t);
-    } catch (e) {
-      return null;
-    }
-  }
 
-  DateTime convertToDate(String input) {
-    try {
-      var d = new DateFormat.yMd().parseStrict(input);
-      return d;
-    } catch (e) {
-      return null;
-    }
-  }
 
   Row _buildFormRowField(String label, TextFormField formField) {
+
     return Row(
       children: <Widget>[
-        SizedBox(width: 120.0, child: Text(label, style: TextStyle(fontSize: 18.0))),
+        SizedBox(
+            width: 100.0,
+            child: Text(
+                label,
+                style: TextStyle(
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w900
+                )
+            )
+        ),
         Expanded(child: Container(
-          decoration: BoxDecoration(
-            color: Colors.lightBlueAccent,
-          ),
           child: formField,
           padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
         ))
@@ -87,7 +80,6 @@ class _FormNewLessonState extends State<FormNewLesson> {
   Widget _buildDateField() {
     TextFormField _dateField = new TextFormField(
       controller: _dateController,
-      decoration: textInputDecoration(),
       onSaved: (String value) => lesson.date = value,
       validator: (value) {
         if (value.isEmpty) {
@@ -95,7 +87,7 @@ class _FormNewLessonState extends State<FormNewLesson> {
         }
       },
     );
-    Row _fieldGroup = this._buildFormRowField('Datum:', _dateField);
+    Row _fieldGroup = this._buildFormRowField('DATUM:', _dateField);
     return new GestureDetector(
       child: AbsorbPointer(child: _fieldGroup),
       onTap: () => _selectDate(context, _dateController.text),
@@ -104,7 +96,6 @@ class _FormNewLessonState extends State<FormNewLesson> {
 
   Widget _buildStartTimeField() {
     TextFormField _textField = TextFormField(
-      decoration: textInputDecoration(),
       onSaved: (String value) => lesson.startTime = value,
       controller: _startTimeController,
       keyboardType: TextInputType.datetime,
@@ -115,7 +106,7 @@ class _FormNewLessonState extends State<FormNewLesson> {
       },
     );
 
-    Row _fieldGroup = this._buildFormRowField('Begintijd', _textField);
+    Row _fieldGroup = this._buildFormRowField('BEGINTIJD', _textField);
 
     return new GestureDetector(
       child: AbsorbPointer(child: _fieldGroup),
@@ -125,12 +116,11 @@ class _FormNewLessonState extends State<FormNewLesson> {
 
   Widget _buildEndTimeField() {
     TextFormField _textField = TextFormField(
-      decoration: textInputDecoration(),
       onSaved: (String value) => lesson.endTime = value,
       controller: _endTimeController
     );
 
-    Row _fieldGroup = this._buildFormRowField('Eindtijd', _textField);
+    Row _fieldGroup = this._buildFormRowField('EINDTIJD', _textField);
 
     return new GestureDetector(
       child: AbsorbPointer(child: _fieldGroup),
@@ -138,18 +128,12 @@ class _FormNewLessonState extends State<FormNewLesson> {
     );
   }
 
-  InputDecoration textInputDecoration () {
-    return InputDecoration(
-        border: InputBorder.none,
-    );
-  }
-
   Widget _buildFormButton() {
     return SizedBox(
         width: double.infinity,
         child: RaisedButton(
-          child: Text('Opslaan', style: TextStyle(color: Colors.white, fontSize: 18.0)),
-          color: Colors.blue,
+          child: Text('Opslaan', style: TextStyle(color: AppColors.primary, fontSize: 18.0)),
+          color: AppColors.tertiary,
           onPressed: () => this._createAppointment(),
           padding: EdgeInsets.all(15.0),
         )
@@ -160,6 +144,7 @@ class _FormNewLessonState extends State<FormNewLesson> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(title: Text('Nieuwe afspraak')),
+      backgroundColor: AppColors.secondary,
       body: SingleChildScrollView(
         child: Container(
           padding: new EdgeInsets.all(20.0),
@@ -167,12 +152,22 @@ class _FormNewLessonState extends State<FormNewLesson> {
             key: this._formKey,
             child: Column(
               children: <Widget>[
-                _buildDateField(),
-                SizedBox(height: 20.0),
-                _buildStartTimeField(),
-                SizedBox(height: 20.0),
-                _buildEndTimeField(),
-                SizedBox(height: 30.0),
+                Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+                  margin: EdgeInsets.only(bottom: 15.0),
+                  child: Column(
+                    children: <Widget>[
+                      _buildDateField(),
+                      SizedBox(height: 20.0),
+                      _buildStartTimeField(),
+                      SizedBox(height: 20.0),
+                      _buildEndTimeField(),
+                    ],
+                  ),
+                ),
+
+
                 _buildFormButton()
               ],
             ),
@@ -183,23 +178,15 @@ class _FormNewLessonState extends State<FormNewLesson> {
   }
 
   void _createAppointment() {
-
-
     if (_formKey.currentState.validate()) {
 
       _formKey.currentState.save();
 
       provider.init().then((value) {
         provider.insert(lesson);
-
         Navigator.pop(context, 'saved');
       });
     }
-
-
-
-
-
   }
 
   @override

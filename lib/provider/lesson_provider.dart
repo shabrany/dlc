@@ -34,7 +34,7 @@ class LessonProvider {
   }
 
   Future<List<Lesson>> all() async {
-    List<Map> rows = await db.rawQuery('SELECT * FROM lessons');
+    List<Map> rows = await db.rawQuery('SELECT * FROM lessons ORDER BY `date` DESC');
     List<Lesson> lessons = new List();
 
     if (rows.length > 0) {
