@@ -18,6 +18,7 @@ class _FormNewLessonState extends State<FormNewLesson> {
   final _endTimeController = new TextEditingController();
 
   final GlobalKey<FormState>_formKey = new GlobalKey<FormState>();
+  var passKey = new GlobalKey<FormFieldState>();
 
   Lesson lesson = new Lesson();
   LessonProvider provider = new LessonProvider();
@@ -85,9 +86,14 @@ class _FormNewLessonState extends State<FormNewLesson> {
 
   Widget _buildDateField() {
     TextFormField _dateField = new TextFormField(
-        controller: _dateController,
-        decoration: textInputDecoration(),
-        onSaved: (String value) => lesson.date = value,
+      controller: _dateController,
+      decoration: textInputDecoration(),
+      onSaved: (String value) => lesson.date = value,
+      validator: (value) {
+        if (value.isEmpty) {
+          return "Kies een datum, aub.";
+        }
+      },
     );
     Row _fieldGroup = this._buildFormRowField('Datum:', _dateField);
     return new GestureDetector(
@@ -102,6 +108,11 @@ class _FormNewLessonState extends State<FormNewLesson> {
       onSaved: (String value) => lesson.startTime = value,
       controller: _startTimeController,
       keyboardType: TextInputType.datetime,
+      validator: (value) {
+        if (value.isEmpty) {
+          return "Kies een tijd, aub.";
+        }
+      },
     );
 
     Row _fieldGroup = this._buildFormRowField('Begintijd', _textField);
@@ -116,8 +127,7 @@ class _FormNewLessonState extends State<FormNewLesson> {
     TextFormField _textField = TextFormField(
       decoration: textInputDecoration(),
       onSaved: (String value) => lesson.endTime = value,
-      controller: _endTimeController,
-      keyboardType: TextInputType.datetime,
+      controller: _endTimeController
     );
 
     Row _fieldGroup = this._buildFormRowField('Eindtijd', _textField);
@@ -174,14 +184,22 @@ class _FormNewLessonState extends State<FormNewLesson> {
 
   void _createAppointment() {
 
-    _formKey.currentState.save();
 
-    provider.init().then((value) {
-      provider.insert(lesson);
-    });
+    if (_formKey.currentState.validate()) {
+
+      _formKey.currentState.save();
+
+      provider.init().then((value) {
+        provider.insert(lesson);
+
+        Navigator.pop(context, 'saved');
+      });
+    }
 
 
-    Navigator.pop(context, 'saved');
+
+
+
   }
 
   @override

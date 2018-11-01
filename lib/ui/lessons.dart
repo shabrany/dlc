@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'create_lesson.dart';
 import 'package:rijleskaart/provider/lesson_provider.dart';
 import 'package:rijleskaart/model/lesson.dart';
+import './app_colors.dart' as AppColors;
 
 class Lessons extends StatefulWidget {
 
@@ -16,20 +18,21 @@ class _LessonsState extends State<Lessons> {
 
   List<Lesson> _lessons_ = new List();
 
-  final TextStyle _cardFooterStyle = TextStyle(color: Colors.grey);
+  final TextStyle _cardFooterStyle = TextStyle(color: AppColors.textPrimary);
 
-  final Icon _cardFooterIcon = Icon(Icons.access_time, size: 20.0, color: Colors.grey);
+  final DateFormat df = new DateFormat("EEE, MMM d, ''yy");
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: AppBar(title: Text('Afspraken')),
+      appBar: AppBar(title: Text('Afspraken'), backgroundColor: AppColors.primary),
       body: _renderList(),
-      backgroundColor: Colors.grey.shade100,
       floatingActionButton: FloatingActionButton(
         onPressed: () => _createLesson(context),
         tooltip: 'Nieuwe afspraak toevoegen',
         child: Icon(Icons.add),
+        backgroundColor: AppColors.tertiary,
+        foregroundColor: AppColors.primary,
       ),
     );
   }
@@ -65,8 +68,8 @@ class _LessonsState extends State<Lessons> {
           children: <Widget>[
             ListTile(
               title: Text(
-                lesson.date,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+                df.format(new DateFormat.yMd().parseStrict(lesson.date)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0, color: AppColors.primary),
               ),
             ),
             Container(
@@ -82,8 +85,6 @@ class _LessonsState extends State<Lessons> {
   Widget _buildCardFooter(Lesson lesson) {
     return Row(
       children: <Widget>[
-        _cardFooterIcon,
-        const SizedBox(width: 10.0),
         Text(lesson.startTime, style: _cardFooterStyle),
         const SizedBox(width: 10.0),
         Text('-', style: _cardFooterStyle),

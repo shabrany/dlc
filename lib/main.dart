@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './ui/lessons.dart';
+import './ui/app_colors.dart' as AppColors;
 
 void main() => runApp(new MyApp());
 
@@ -11,6 +12,9 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => _mediaQuery(context, child),
       title: 'Digitale Rijleskaart',
       home: new MainPage(),
+      theme: ThemeData(
+        primaryColor: AppColors.primary,
+      ),
     );
   }
 
@@ -54,7 +58,7 @@ class _MainPageState extends State<MainPage> {
           new BottomNavigationBarItem(icon: Icon(Icons.star), title: Text("Vaardigheden")),
         ], 
         onTap: navigationTapped, 
-        currentIndex: _currentPage
+        currentIndex: _currentPage,
       ),
     );
   }
