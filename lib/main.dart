@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './ui/lessons.dart';
 import './ui/app_colors.dart' as AppColors;
+import './ui/dashboard/dashboard.dart';
 
 void main() => runApp(new MyApp());
 
@@ -56,8 +57,8 @@ class _MainPageState extends State<MainPage> {
           new BottomNavigationBarItem(icon: Icon(Icons.timeline), title: Text("Voortgang")),
           new BottomNavigationBarItem(icon: Icon(Icons.schedule), title: Text("Afspraken")),
           new BottomNavigationBarItem(icon: Icon(Icons.star), title: Text("Vaardigheden")),
-        ], 
-        onTap: navigationTapped, 
+        ],
+        onTap: navigationTapped,
         currentIndex: _currentPage,
       ),
     );
@@ -87,19 +88,6 @@ class _MainPageState extends State<MainPage> {
   void dispose() {
     super.dispose();
     _pageController.dispose();
-  }
-}
-
-class Dashboard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(title: Text('Voortgang')),
-      body: new Container(
-        alignment: Alignment.topLeft,
-        child: Text('Dashboard screen'),
-      ),
-    );
   }
 }
 
