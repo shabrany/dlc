@@ -80,7 +80,7 @@ class _FormNewLessonState extends State<FormNewLesson> {
   Widget _buildDateField() {
     TextFormField _dateField = new TextFormField(
       controller: _dateController,
-      onSaved: (String value) => lesson.date = value,
+      onSaved: (String value) { lesson.date = value; },
       validator: (value) {
         if (value.isEmpty) {
           return "Kies een datum, aub.";

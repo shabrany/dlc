@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
       ),
       bottomNavigationBar: new BottomNavigationBar(
         items: [
-          new BottomNavigationBarItem(icon: Icon(Icons.timeline), title: Text("Voortgang")),
+          new BottomNavigationBarItem(icon: Icon(Icons.timeline), title: Text("Dashboard")),
           new BottomNavigationBarItem(icon: Icon(Icons.schedule), title: Text("Afspraken")),
           new BottomNavigationBarItem(icon: Icon(Icons.star), title: Text("Vaardigheden")),
         ],
@@ -98,7 +98,8 @@ class Skills extends StatelessWidget {
       appBar: AppBar(title: Text('Vaardigheden')),
       body: new Container(
         alignment: Alignment.topLeft,
-        child: Text('Lijst met alle auto skilss'),
+        child: new Padding(child: Text('Lijst met alle auto skilss'), padding: EdgeInsets.all(33.0),),
+
       ),
     );
   }

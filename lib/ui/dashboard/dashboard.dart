@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../app_colors.dart' as AppColors;
+import 'package:rijleskaart/provider/lesson_provider.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -9,6 +11,11 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+
+  LessonProvider provider = new LessonProvider();
+
+  String _nextLesson = '';
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -19,6 +26,27 @@ class _DashboardState extends State<Dashboard> {
           ]
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  void loadData() async {
+    await provider.init();
+    provider.findNext().then((lesson) {
+        setState(() {
+          _nextLesson = lesson.getFormattedStartDate();
+        });
+    });
   }
 
   Widget _showNextLesson() {
@@ -48,7 +76,7 @@ class _DashboardState extends State<Dashboard> {
           Row(
             children: <Widget> [
               Icon(Icons.calendar_today, size: 38.0),
-              Text('Woe, 16 Maart @ 15:00', style: TextStyle(fontSize: 18.0))
+              Text(_nextLesson, style: TextStyle(fontSize: 18.5))
             ],
             mainAxisAlignment: MainAxisAlignment.spaceAround,
           )

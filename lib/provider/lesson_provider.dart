@@ -39,9 +39,6 @@ class LessonProvider {
 
     if (rows.length > 0) {
       for (int i = 0; i < rows.length; i++) {
-
-        print(rows[i]['startTime']);
-
         Lesson lesson = new Lesson.init(rows[i]['date'], rows[i]['startTime'], rows[i]['endTime']);
         lesson.id = rows[i]['id'];
         lessons.add(lesson);
@@ -50,4 +47,13 @@ class LessonProvider {
     return lessons;
   }
 
+  Future<Lesson> findNext() async {
+
+    List<Map> row = await db.rawQuery('SELECT * FROM lessons ORDER BY id DESC LIMIT 1');
+
+    Map rawLesson = row.first;
+
+    return new Lesson.init(rawLesson['date'], rawLesson['startTime'], rawLesson['endTime']);
+
+  }
 }

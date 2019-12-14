@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:rijleskaart/util/helpers.dart';
 import 'create_lesson.dart';
 import 'package:rijleskaart/provider/lesson_provider.dart';
 import 'package:rijleskaart/model/lesson.dart';
@@ -68,7 +69,7 @@ class _LessonsState extends State<Lessons> {
           children: <Widget>[
             ListTile(
               title: Text(
-                df.format(new DateFormat.yMd().parseStrict(lesson.date)),
+                formatDate(lesson.date),
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0, color: AppColors.primary),
               ),
             ),

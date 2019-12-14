@@ -18,3 +18,9 @@ TimeOfDay convertToTime(String input) {
     return null;
   }
 }
+
+String formatDate(String dateValue) {
+  List<int> parts = dateValue.split('-').map((value) => int.parse(value)).toList();
+  DateTime startDate = new DateTime(parts[0], parts[1], parts[2]);
+  return new DateFormat("EEE, MMM d, ''yy" ).format(startDate);
+}
