@@ -49,7 +49,7 @@ class LessonProvider {
 
   Future<Lesson> findNext() async {
 
-    List<Map> row = await db.rawQuery('SELECT * FROM lessons ORDER BY id DESC LIMIT 1');
+    List<Map> row = await db.rawQuery("SELECT * FROM lessons WHERE `date` > DATE('NOW') ORDER BY `date` LIMIT 1");
 
     Map rawLesson = row.first;
 
