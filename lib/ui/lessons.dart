@@ -78,7 +78,7 @@ class _LessonsState extends State<Lessons> {
               child: _buildCardFooter(lesson)
             )
           ],
-        )
+        ),
       ),
     );//Card(child: Text(_lessons[index]));
   }
