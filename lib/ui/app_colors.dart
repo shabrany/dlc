@@ -7,3 +7,4 @@ final textPrimary = const Color(0xFF213855);
 final buttonPrimary = const Color(0xFF00A6ED);
 final tertiary = const Color(0xFFFFC845);
 final quartiary = const Color(0xFFF88B69);
+final red = Colors.red;

@@ -54,4 +54,9 @@ class LessonProvider {
 
     return new Lesson.init(rawLesson['date'], rawLesson['startTime'], rawLesson['endTime']);
   }
+
+  Future<int> delete(int id) async {
+    return await db.delete('lessons', where: 'id = ?', whereArgs: [id]);
+  }
+
 }

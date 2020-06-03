@@ -72,6 +72,15 @@ class _LessonsState extends State<Lessons> {
                 formatDate(lesson.date),
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0, color: AppColors.primary),
               ),
+              trailing: IconButton(
+                  icon: Icon(Icons.delete, color: AppColors.red),
+                  onPressed: () => {
+                    provider.delete(lesson.id),
+                    _lessons_.clear(),
+                    loadData()
+                  }
+              ),
+
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 10.0),
