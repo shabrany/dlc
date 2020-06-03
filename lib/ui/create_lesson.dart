@@ -24,13 +24,21 @@ class _FormNewLessonState extends State<FormNewLesson> {
 
   Lesson lesson = new Lesson();
   LessonProvider provider = new LessonProvider();
+  int _lastDateYear;
+  int _firstDateYear;
+
+  _FormNewLessonState() {
+    final int _currentYear = DateTime.now().year;
+    _lastDateYear = _currentYear + 1;
+    _firstDateYear = _currentYear - 1;
+  }
 
   Future<Null> _selectDate(BuildContext context, String initialDateString ) async {
     final DateTime datePicked = await showDatePicker(
         context: context,
         initialDate: Util.convertToDate(initialDateString) ?? _today,
-        firstDate: DateTime(2016),
-        lastDate: DateTime(2020)
+        firstDate: DateTime(_firstDateYear),
+        lastDate: DateTime(_lastDateYear),
     );
 
     if (datePicked == null) return;
